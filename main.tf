@@ -15,6 +15,23 @@ resource "datadog_integration_aws" "core" {
   filter_tags                      = var.filter_tags
 }
 
+resource "datadog_integration_aws_lambda_arn" "main_collector" {
+  account_id = var.aws_account_id
+  lambda_arn = aws_cloudformation_stack.datadog-forwarder.outputs.DatadogForwarderArn
+}
+
+resource "datadog_integration_aws_log_collection" "main" {
+  account_id = var.aws_account_id
+  services = [
+    "s3",
+    "elb",
+    "elbv2",
+    "cloudfront",
+    "redshift",
+    "lambda"
+  ]
+}
+
 resource "aws_iam_role" "datadog-integration" {
   count = var.enable_datadog_aws_integration ? 1 : 0
   name  = "datadog-integration-role"
