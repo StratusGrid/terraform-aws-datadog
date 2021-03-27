@@ -6,7 +6,7 @@ variable "aws_account_id" {
 variable "aws_region" {
   description = "AWS Region"
   type        = string
-  default     = "us-east-2"
+  default     = "us-east-1"
 }
 variable "cloudtrail_bucket_id" {
   description = "The Cloudtrail bucket ID. Use only from org master account."
@@ -85,4 +85,10 @@ variable "filter_tags" {
   description = "Array of EC2 tags (in the form key:value) defines a filter that Datadog use when collecting metrics from EC2. Wildcards, such as ? (for single characters) and * (for multiple characters) can also be used. Only hosts that match one of the defined tags will be imported into Datadog. The rest will be ignored."
   type        = list(string)
   default     = []
+}
+
+variable "forwarder_regions" {
+  description = "Array of regions in which install DataDog Forwarder"
+  default     = ["us-east-1"]
+  type        = set(string)
 }

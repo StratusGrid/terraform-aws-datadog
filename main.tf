@@ -6,8 +6,8 @@ resource "datadog_integration_aws" "core" {
   role_name  = "datadog-integration-role"
 
   host_tags = [
-    "namespace:${var.namespace}",
-    "env:${var.env}"
+    "account_namespace:${var.namespace}",
+    "account_env:${var.env}"
   ]
 
   account_specific_namespace_rules = var.account_specific_namespace_rules
@@ -17,7 +17,7 @@ resource "datadog_integration_aws" "core" {
 
 resource "datadog_integration_aws_lambda_arn" "main_collector" {
   account_id = var.aws_account_id
-  lambda_arn = aws_cloudformation_stack.datadog-forwarder.outputs.DatadogForwarderArn
+  lambda_arn = aws_cloudformation_stack.datadog-forwarder[var.aws_region].outputs.DatadogForwarderArn
 }
 
 resource "datadog_integration_aws_log_collection" "main" {
