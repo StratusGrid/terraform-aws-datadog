@@ -86,3 +86,9 @@ variable "filter_tags" {
   type        = list(string)
   default     = []
 }
+
+variable "reserved_concurrency" {
+  description = "Lambda reserved concurrency for Datadog Forwarder."
+  type        = number
+  default     = 100
+}
