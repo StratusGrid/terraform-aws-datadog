@@ -18,14 +18,9 @@ variable "cloudtrail_bucket_arn" {
   type        = string
   default     = ""
 }
-variable "datadog_api_key" {
-  description = "The API key for the datadog integration."
+variable "datadog_api_key_name" {
+  description = "The API key name for the datadog integration from Secrets Manager."
   type        = string
-}
-variable "namespace" {
-  description = "The namespace tag to apply to all data sent to datadog"
-  type        = string
-  default     = ""
 }
 variable "create_elb_logs_bucket" {
   description = "Create S3 bucket for ELB log sync"
@@ -42,8 +37,8 @@ variable "enable_datadog_aws_integration" {
   type        = bool
   default     = true
 }
-variable "env" {
-  description = "The env tag to apply to all data sent to datadog"
+variable "account_name" {
+  description = "The account_name tag to apply to all data sent to datadog"
   type        = string
   default     = ""
 }
@@ -91,4 +86,10 @@ variable "reserved_concurrency" {
   description = "Lambda reserved concurrency for Datadog Forwarder."
   type        = number
   default     = 100
+}
+
+variable "aws_integration_tags" {
+  description = "Tags to add to metrics from AWS integration."
+  type        = map(any)
+  default     = {}
 }

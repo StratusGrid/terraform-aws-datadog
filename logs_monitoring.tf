@@ -1,13 +1,13 @@
 resource "aws_cloudformation_stack" "datadog-forwarder" {
-  name         = "${local.stack_prefix}datadog-forwarder"
+  name         = "${var.aws_region}-${local.stack_prefix}datadog-forwarder"
   capabilities = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND"]
   parameters = {
-    DdApiKeySecretArn = aws_secretsmanager_secret.datadog_api_key.arn
+    DdApiKeySecretArn = data.aws_secretsmanager_secret.dd_api_key.id
     DdApiKey          = "dummy-value"
-    DdTags            = "namespace:${var.namespace},env:${var.env}"
+    DdTags            = replace(jsonencode(var.aws_integration_tags), "/[{}\"]/", "")
     DdSite            = var.dd_forwarder_dd_site
     ExcludeAtMatch    = var.log_exclude_at_match
-    FunctionName      = "${local.stack_prefix}datadog-forwarder"
+    FunctionName      = "${var.aws_region}-${local.stack_prefix}datadog-forwarder"
     ReservedConcurrency = var.reserved_concurrency
   }
   template_url = "https://datadog-cloudformation-template.s3.amazonaws.com/aws/forwarder/${var.dd_forwarder_template_version}.yaml"
@@ -19,13 +19,9 @@ resource "aws_cloudformation_stack" "datadog-forwarder" {
   }
 }
 
-resource "aws_secretsmanager_secret" "datadog_api_key" {
-  name_prefix = "${local.stack_prefix}datadog-api-key"
-  description = "Datadog API Key"
-  tags        = local.default_tags
+data "aws_secretsmanager_secret" "dd_api_key" {
+  name = var.datadog_api_key_name
 }
-
-resource "aws_secretsmanager_secret_version" "datadog_api_key" {
-  secret_id     = aws_secretsmanager_secret.datadog_api_key.id
-  secret_string = var.datadog_api_key
+data "aws_secretsmanager_secret_version" "dd_api_key" {
+  secret_id = data.aws_secretsmanager_secret.dd_api_key.id
 }
