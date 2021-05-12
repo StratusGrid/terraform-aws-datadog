@@ -27,8 +27,8 @@ module "datadog" {
   version               = "~>1"
   aws_account_id        = data.aws_caller_identity.current.account_id
   datadog_api_key       = var.datadog_api_key
-  env                   = "prod"
-  namespace             = "team_foo"
+  account_name          = "company-foo-prod"
+  aws_region            = "us-west-2"
 
   cloudtrail_bucket_id  = aws_s3_bucket.org-cloudtrail-bucket.id
   cloudtrail_bucket_arn = aws_s3_bucket.org-cloudtrail-bucket.arn
@@ -57,8 +57,8 @@ module "datadog" {
   datadog_api_key                = var.datadog_api_key
   create_elb_logs_bucket         = false
   enable_datadog_aws_integration = false
-  env                            = "prod"
-  namespace                      = "project_foo"
+  account_name          = "company-foo-prod"
+  aws_region            = "us-west-2"
 
   cloudwatch_log_groups = ["cloudwatch_log_group_1", "cloudwatch_log_group_2"]
 }
@@ -68,7 +68,7 @@ Note: It is safe to create multiple Cloudwatch only modules across different
 Terraform stacks within a single AWS account since all resouces used for
 Cloudwatch log sync are namspaced by module.
 
-**Be certain to use unique  `namespace`/`env` combinations, to avoid conflict with other instances of this module.
+**Be certain to use unique  `account_name`/`aws_region` combinations, to avoid conflict with other instances of this module.
 
 ## Module Versions
 
