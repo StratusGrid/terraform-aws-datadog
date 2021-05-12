@@ -5,10 +5,7 @@ resource "datadog_integration_aws" "core" {
   account_id = var.aws_account_id
   role_name  = "datadog-integration-role"
 
-  host_tags = [
-    "namespace:${var.namespace}",
-    "env:${var.env}"
-  ]
+  host_tags = [for k,v in var.aws_integration_tags : "${k}:${v}"]
 
   account_specific_namespace_rules = var.account_specific_namespace_rules
   excluded_regions                 = var.excluded_regions
