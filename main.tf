@@ -17,7 +17,7 @@ resource "datadog_integration_aws" "core" {
 
 resource "datadog_integration_aws_lambda_arn" "main_collector" {
   account_id = var.aws_account_id
-  lambda_arn = aws_cloudformation_stack.datadog-forwarder.outputs.DatadogForwarderArn
+  lambda_arn = aws_cloudformation_stack.datadog_forwarder.outputs.DatadogForwarderArn
 }
 
 resource "datadog_integration_aws_log_collection" "main" {
@@ -32,7 +32,7 @@ resource "datadog_integration_aws_log_collection" "main" {
   ]
 }
 
-resource "aws_iam_role" "datadog-integration" {
+resource "aws_iam_role" "datadog_integration" {
   count = var.enable_datadog_aws_integration ? 1 : 0
   name  = "datadog-integration-role"
 
@@ -61,7 +61,7 @@ EOF
   })
 }
 
-resource "aws_iam_policy" "datadog-core" {
+resource "aws_iam_policy" "datadog_core" {
   count       = var.enable_datadog_aws_integration ? 1 : 0
   name        = "datadog-core-integration"
   path        = "/"
@@ -151,8 +151,8 @@ resource "aws_iam_policy" "datadog-core" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "datadog-core-attach" {
+resource "aws_iam_role_policy_attachment" "datadog_core_attach" {
   count      = var.enable_datadog_aws_integration ? 1 : 0
-  role       = aws_iam_role.datadog-integration[0].name
-  policy_arn = aws_iam_policy.datadog-core[0].arn
+  role       = aws_iam_role.datadog_integration[0].name
+  policy_arn = aws_iam_policy.datadog_core[0].arn
 }
