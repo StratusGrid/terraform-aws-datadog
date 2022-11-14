@@ -1,16 +1,19 @@
 variable "dd_api_key" {
-  type    = string
-  default = "1234567890"
+  type        = string
+  default     = "1234567890"
+  description = "DataDog API key"
 }
 
 variable "dd_app_key" {
-  type    = string
-  default = "1234567890"
+  type        = string
+  default     = "1234567890"
+  description = "DataDog APP key"
 }
 
 variable "aws_region" {
-  type    = string
-  default = "us-west-2"
+  type        = string
+  default     = "us-west-2"
+  description = "AWS Region"
 }
 
 provider "datadog" {
