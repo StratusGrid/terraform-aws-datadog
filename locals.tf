@@ -1,8 +1,7 @@
 locals {
-  stack_prefix = var.env == "" ? "" : "${join("-", compact([var.namespace, var.env]))}-"
+  stack_prefix = var.account_name == "" ? "" : "${var.account_name}-"
   default_tags = {
-    env       = var.env
-    namespace = var.namespace
+    account_name       = var.account_name
     terraform = "true"
   }
 }
